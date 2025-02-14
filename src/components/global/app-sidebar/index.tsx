@@ -1,3 +1,4 @@
+"use client"
 import { Project, User } from "@/db/schema";
 import React from "react";
 import {
@@ -8,16 +9,25 @@ import {
   SidebarHeader,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import RecentOpen from "@/components/global/app-sidebar/recent-open";
+import NavFooter from "@/components/global/app-sidebar/nav-footer";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import NavMain from "@/components/global/app-sidebar/nav-main";
-interface AppSidebarProps {}
+
+import { data } from "@/lib/constants";
+import { InferSelectModel } from "drizzle-orm";
+
+
+type ProjectType = InferSelectModel<typeof Project>
+type UserType = InferSelectModel<typeof User>
+
 
 const AppSidebar = ({
   recentProjects,
   user,
   ...props
-}: { recentProjects: (typeof Project)[] } & {
-  user: typeof User;
+}: { recentProjects: ProjectType[] } & {
+  user: UserType;
 } & React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar
@@ -41,9 +51,12 @@ const AppSidebar = ({
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent className="px-3 mt-10 gap-y-6">
-        <NavMain/>
+        <NavMain items={data.navMain}/>
+        <RecentOpen recentProjects={recentProjects || []}/>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter >
+        <NavFooter drizzleUser={user}/>
+      </SidebarFooter>
     </Sidebar>
   );
 };

@@ -44,7 +44,7 @@ export const Project = pgTable("projects", {
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date()),
-  slides: json("slides"),
+  slides: json("slides").$type<any>(),
   userId: uuid("user_id")
     .notNull()
     .references(() => User.id),

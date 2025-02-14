@@ -1,7 +1,9 @@
 import { Project, Purchasers, User } from "@/db/schema";
 import { db } from "@/db/index";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
+
+//query to get user by ID
 export async function getUserById(userId: string) {
   if (!userId) {
     throw new Error("Invalid userId: userId is required");
@@ -27,6 +29,7 @@ export async function getUserById(userId: string) {
   }
 }
 
+//query to add new user
 export async function addUser(
   userId: string,
   email: string,
@@ -51,7 +54,7 @@ export async function addUser(
   }
 }
 
-
+// query to get projects belongs to user
 export async function getUserProjects(userId: string) {
   if (!userId) {
     throw new Error("Invalid userId: userId is required");
@@ -63,6 +66,28 @@ export async function getUserProjects(userId: string) {
       .from(Project)
       .where(eq(Project.userId ,userId))
       .orderBy(desc(Project.updatedAt));
+
+    return projects;
+  } catch (error) {
+    console.error("Database query error [PROJECT_TABLE]:", error);
+    throw new Error("Failed to fetch projects");
+  }
+}
+
+//query to get recent projects
+export async function getProjects(userId: string , isDeleted:boolean) {
+  if (!userId) {
+    throw new Error("Invalid userId: userId is required");
+  }
+
+  try {
+    const projects = await db
+      .select()
+      .from(Project)
+      .where(and(eq(Project.userId ,userId),
+                eq(Project.isDeleted,false)))
+      .orderBy(desc(Project.updatedAt))
+      .limit(5);
 
     return projects;
   } catch (error) {
