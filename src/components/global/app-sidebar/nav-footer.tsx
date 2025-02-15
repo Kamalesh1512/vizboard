@@ -1,8 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { User } from "@/db/schema";
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { InferSelectModel } from "drizzle-orm";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -23,7 +27,7 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
       <SidebarMenuItem>
         <div className="flex flex-col gap-y-6 items-start group-data-[collapsible=icon]:hidden">
           {!drizzleUser.subscription && (
-            <div className="flex flex-col items-start p-2 ob-3 gap-4 bg-background-80">
+            <div className="flex flex-col items-start p-2 pb-3 gap-4 bg-primary-foreground rounded-xl">
               <div className="flex flex-col items-start gap-1">
                 <p className="text-base font-bold">
                   Get <span className="text-vivid">Creative AI</span>
@@ -33,17 +37,29 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
                 </span>
               </div>
               <div className="w-full bg-vivid-gradient p-[1px] rounded-full">
-                <Button 
-                className="w-ful border-vivid bg-background-80 hover:bg-background-90 text-primary rounded-full font-bold"
-                variant={'default'}
-                size={'lg'}
-                // onClick={handleUpgrade}
+                <Button
+                  className="w-ful border-vivid bg-primary-foreground hover:bg-primary-foreground text-primary rounded-full font-bold"
+                  variant={"outline"}
+                  size={"lg"}
+                  // onClick={handleUpgrade}
                 >
-                    {loading?'Upgrading...':'Upgrade'}
+                  {loading ? "Upgrading..." : "Upgrade"}
                 </Button>
               </div>
             </div>
           )}
+          <SignedIn>
+            <SidebarMenuButton
+              size={"lg"}
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <UserButton/>
+              <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                <span className="truncate font-semibold">{user?.fullName}</span>
+                <span className='truncate text-muted-foreground'>{user?.emailAddresses[0].emailAddress}</span>
+              </div>
+            </SidebarMenuButton>
+          </SignedIn>
         </div>
       </SidebarMenuItem>
     </SidebarMenu>

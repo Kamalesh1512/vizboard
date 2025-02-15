@@ -2,7 +2,6 @@ import { Project, Purchasers, User } from "@/db/schema";
 import { db } from "@/db/index";
 import { and, desc, eq } from "drizzle-orm";
 
-
 //query to get user by ID
 export async function getUserById(userId: string) {
   if (!userId) {
@@ -15,7 +14,8 @@ export async function getUserById(userId: string) {
         id: User.id,
         clerkId: User.clerkId,
         email: User.email,
-        purchasedProjects: Project.id, // Fetching only project ID
+        purchasedProjects: Project.id,// Fetching only project ID
+        subscription:User.subscription, 
       })
       .from(User)
       .leftJoin(Purchasers, eq(User.id, Purchasers.userId))
@@ -41,13 +41,16 @@ export async function addUser(
   }
 
   try {
-    const newUser=await db.insert(User).values({
-      clerkId: userId,
-      email: email,
-      name: username,
-      profileImage: image,
-    }).returning();
-    return newUser[0]
+    const newUser = await db
+      .insert(User)
+      .values({
+        clerkId: userId,
+        email: email,
+        name: username,
+        profileImage: image,
+      })
+      .returning();
+    return newUser[0];
   } catch (error) {
     console.error("Database query error [USER_TABLE]:", error);
     throw new Error("Failed to add new user");
@@ -64,7 +67,7 @@ export async function getUserProjects(userId: string) {
     const projects = await db
       .select()
       .from(Project)
-      .where(eq(Project.userId ,userId))
+      .where(eq(Project.userId, userId))
       .orderBy(desc(Project.updatedAt));
 
     return projects;
@@ -75,7 +78,7 @@ export async function getUserProjects(userId: string) {
 }
 
 //query to get recent projects
-export async function getProjects(userId: string , isDeleted:boolean) {
+export async function getProjects(userId: string, isDeleted: boolean) {
   if (!userId) {
     throw new Error("Invalid userId: userId is required");
   }
@@ -84,8 +87,7 @@ export async function getProjects(userId: string , isDeleted:boolean) {
     const projects = await db
       .select()
       .from(Project)
-      .where(and(eq(Project.userId ,userId),
-                eq(Project.isDeleted,false)))
+      .where(and(eq(Project.userId, userId), eq(Project.isDeleted, false)))
       .orderBy(desc(Project.updatedAt))
       .limit(5);
 
@@ -93,5 +95,20 @@ export async function getProjects(userId: string , isDeleted:boolean) {
   } catch (error) {
     console.error("Database query error [PROJECT_TABLE]:", error);
     throw new Error("Failed to fetch projects");
+  }
+}
+
+// query to update the project
+export async function updateProject(projectId: string, isDeleted:boolean) {
+  try {
+    const project = await db
+      .update(Project)
+      .set({ isDeleted: isDeleted })
+      .where(eq(Project.id, projectId));
+
+    return project;
+  } catch (error) {
+    console.error("Database query error [PROJECT_TABLE]:", error);
+    throw new Error("Failed to Update project Table");
   }
 }

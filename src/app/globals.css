@@ -94,9 +94,3 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.border-vivid {
-  border-width: 2px;
-  border-radius: 9999px;
-  border-image: linear-gradient(180deg, #F55C7A 0%, #F6BC66 100%);
-  border-image-slice: 1;
-}

@@ -32,10 +32,10 @@ const AppSidebar = ({
   return (
     <Sidebar
       collapsible="icon"
-      className="max-w-[212px] bg-background-90"
+      className="max-w-[212px] bg-primary-foreground"
       {...props}
     >
-      <SidebarHeader className="pt-6 ,px-3 pb-0">
+      <SidebarHeader className="pt-6 px-2 pb-0">
         <SidebarMenuButton
           size={"lg"}
           className="data-[state=open]:text-sidebar-accent-foreground gap-5"
@@ -50,7 +50,7 @@ const AppSidebar = ({
           </span>
         </SidebarMenuButton>
       </SidebarHeader>
-      <SidebarContent className="px-3 mt-10 gap-y-6">
+      <SidebarContent className="px-2 mt-10 gap-y-6">
         <NavMain items={data.navMain}/>
         <RecentOpen recentProjects={recentProjects || []}/>
       </SidebarContent>
