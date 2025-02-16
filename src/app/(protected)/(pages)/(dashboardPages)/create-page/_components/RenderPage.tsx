@@ -3,8 +3,10 @@ import usePromptStore from "@/store/usePromptStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React from "react";
-import CreatePage from "./CreatePage";
-import CreateAI from "../GenerateAI/CreativeAI";
+import CreatePage from "./CreatePage/CreatePage";
+import CreateAI from "./GenerateAI/CreativeAI";
+import ScratchPage from "./Scratch/ScratchPage";
+
 
 const RenderPage = () => {
   const router = useRouter();
@@ -28,7 +30,7 @@ const RenderPage = () => {
       case "create":
         return <CreatePage onSelectionOptions={handleSelectedOption}/>;
       case "create-scratch":
-        return <></>;
+        return <ScratchPage onBack={handleBack}/>;
       case "creative-ai":
         return <CreateAI onBack={handleBack}/>;
       default:

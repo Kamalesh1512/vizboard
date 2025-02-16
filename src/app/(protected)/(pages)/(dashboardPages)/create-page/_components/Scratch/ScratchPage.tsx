@@ -1,83 +1,97 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { useSlideStore } from "@/store/useSlideStore";
 import { containerVariants, itemVariants } from "@/lib/constants";
-import useCreativeAIStore from "@/store/useCreativeAIStore";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, Loader2, RotateCcwIcon } from "lucide-react";
+import useScratchStore from "@/store/useStartScratchStore";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { motion } from "framer-motion";
-import { ChevronLeft, Loader2, RotateCcw, Wand2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
 import CardList from "../Common/CardList";
-import usePromptStore from "@/store/usePromptStore";
-import RecentPrompts from "./RecentPrompts";
+import { OutlineCard } from "@/lib/types";
+import { v4 } from "uuid";
 import { useToast } from "@/hooks/use-toast";
-import { generateCreativePrompt } from "@/actions/genai";
+import { generateProject } from "@/actions/project";
 
-interface CreateAIProps {
+interface ScratchPageProps {
   onBack: () => void;
 }
 
-const CreateAI = ({ onBack }: CreateAIProps) => {
+const ScratchPage = ({ onBack }: ScratchPageProps) => {
   const router = useRouter();
-  const {
-    currentAiPrompt,
-    setCurrentAiPrompt,
-    outlines,
-    resetOutlines,
-    addOutline,
-    addMultipleOutlines,
-  } = useCreativeAIStore();
+  const { toast } = useToast();
 
-  const [editingCard, setEditingCard] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const { setProject } = useSlideStore();
+  const { addMultipleOutlines, addOutline, outlines, resetOutlines } =
+    useScratchStore();
+
   const [editText, setEditText] = useState("");
-  const [noOfCards, setNoOfCards] = useState(0);
-  const {toast} = useToast();
-
-  const {prompts,addPrompt} = usePromptStore()
+  const [editingCard, setEditingCard] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const resetCards = () => {
-    setEditingCard(null);
-    setSelectedCard(null);
     setEditText("");
-    setCurrentAiPrompt("");
     resetOutlines();
   };
-
-  const generateOutline = async () => {
-    if (currentAiPrompt==="") {
-      toast({
-        variant:'destructive',
-        description:"Please enter prompt to generate an outline"
-      })
-    }
-    setIsGenerating(true)
-    const response = await generateCreativePrompt(currentAiPrompt)
-
-    //WIP - need to use OpenAI API
-
-    useEffect(()=>{
-      setNoOfCards(outlines.length)
-    },[outlines.length])
+  const handleAddCard = () => {
+    const newCard: OutlineCard = {
+      id: v4(),
+      title: editText || "New Section",
+      order: outlines.length + 1,
+    };
+    setEditText("");
+    addOutline(newCard);
   };
 
+  const handleGenerate = async () => {
+    if (outlines.length === 0) {
+      toast({
+        variant: "destructive",
+        description: "Please add at least one card to generate PPT",
+      });
+    }
+    const response = await generateProject(outlines?.[0]?.title, outlines);
+
+    if (response.status !== 200) {
+      toast({
+        variant: "destructive",
+        description: "Failed to generate project",
+      });
+    }
+    if (response.data) {
+      setProject(response.data);
+      resetOutlines();
+      toast({
+        variant: "default",
+        description: "Projected created successfully",
+      });
+      router.push(`/presentation/${response.data.id}/select-theme`);
+    }else{
+        toast({
+            variant:'destructive',
+            description:'Failed to generate a project'
+        })
+    }
+  };
   return (
     <motion.div
-      variants={containerVariants}
       className="space-y-6 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+      variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <Button
         onClick={() => {
+          resetOutlines();
           onBack();
         }}
         variant={"outline"}
@@ -86,33 +100,25 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
         <ChevronLeft className="mr-2 h-4 w-4" />
         Back
       </Button>
-      <motion.div variants={itemVariants} className="text-center space-y-2">
-        <h1 className="text-4xl font-bold text-primary">
-          Generate with <span className="text-vivid">Creative AI</span>
-        </h1>
-        <p className="text-muted-foreground">
-          {" "}
-          What would you like to create today?
-        </p>
-      </motion.div>
+      <h1 className="text-2xl sm:text-3xl font-bold text-primary text-left">
+        Prompt
+      </h1>
       <motion.div
         className="bg-primary/10 p-4 rounded-xl"
         variants={itemVariants}
       >
         <div className="flex flex-col sm:flex-row justify-between gap-3 items-center rounded-xl">
           <Input
-            value={currentAiPrompt || ""}
-            onChange={(e) => setCurrentAiPrompt(e.target.value)}
-            placeholder="Enter Prompt and add to the cards..."
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            placeholder="Enter Prompt and add to the cards"
             className="text-base sm:text-xl border-0 focus-visible:ring-0 shadow-none p-0 bg-transparent flex-grow"
-            required
           />
           <div className="flex items-center gap-3">
             <Select
-              value={noOfCards.toString()}
-              onValueChange={(value) => setNoOfCards(parseInt(value))}
+              value={outlines.length > 0 ? outlines.length.toString() : "0"}
             >
-              <SelectTrigger className="w-fit gap-2 font-semibold shadow-xl">
+              <SelectTrigger className=" w-fit gap-2 font-semibold shadow-xl">
                 <SelectValue placeholder="Select number of cards" />
               </SelectTrigger>
               <SelectContent className="w-fit">
@@ -123,14 +129,14 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
                 ) : (
                   Array.from(
                     { length: outlines.length },
-                    (_, idx) => idx + 1
+                    (_, index) => index + 1
                   ).map((num) => (
                     <SelectItem
                       key={num}
                       value={num.toString()}
                       className="font-semibold"
                     >
-                      {num} {num === 1 ? "Card" : "Cards"}
+                      {num} {num === 1 ? "card" : "Cards"}
                     </SelectItem>
                   ))
                 )}
@@ -142,30 +148,11 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
               size={"icon"}
               aria-label="Reset cards"
             >
-              <RotateCcw className="h-4 w-" />
+              <RotateCcwIcon className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </motion.div>
-      <div className="w-full flex justify-center items-center">
-        <Button
-          className="font-semibold text-lg flex gap-2 items-center bg-vivid-gradient"
-          onClick={generateOutline}
-          disabled={isGenerating}
-        >
-          {isGenerating ? (
-            <>
-              <Loader2 className="animate-sping mr-2" />
-              Generating...
-            </>
-          ) : (
-            <>
-              Generate
-              <Wand2 />
-            </>
-          )}
-        </Button>
-      </div>
       <CardList
         outlines={outlines}
         addOutline={addOutline}
@@ -183,6 +170,13 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
           setEditText(title);
         }}
       />
+      <Button
+        variant={"secondary"}
+        onClick={handleAddCard}
+        className="w-full bg-primary-10"
+      >
+        Add Card
+      </Button>
       {outlines.length > 0 && (
         <Button
           className="w-full"
@@ -191,16 +185,16 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
         >
           {isGenerating ? (
             <>
-              <Loader2 className="animate-spin mr-2"/>Generating...
+              <Loader2 className="animate-spin mr-2" />
+              Generating...
             </>
           ) : (
-            'Generate'
+            "Generate"
           )}
         </Button>
       )}
-      {prompts.length>0? <RecentPrompts/>:""}
     </motion.div>
   );
 };
 
-export default CreateAI;
+export default ScratchPage;

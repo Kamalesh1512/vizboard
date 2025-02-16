@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import CreatePageSkeleton from "./_components/CreatePage/CreatePageSkeleton";
-import RenderPage from "./_components/CreatePage/RenderPage";
+import RenderPage from "./_components/RenderPage";
+
 
 const page = () => {
   return (

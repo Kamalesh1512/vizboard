@@ -14,8 +14,8 @@ export async function getUserById(userId: string) {
         id: User.id,
         clerkId: User.clerkId,
         email: User.email,
-        purchasedProjects: Project.id,// Fetching only project ID
-        subscription:User.subscription, 
+        purchasedProjects: Project.id, // Fetching only project ID
+        subscription: User.subscription,
       })
       .from(User)
       .leftJoin(Purchasers, eq(User.id, Purchasers.userId))
@@ -99,7 +99,7 @@ export async function getProjects(userId: string, isDeleted: boolean) {
 }
 
 // query to update the project
-export async function updateProject(projectId: string, isDeleted:boolean) {
+export async function updateProject(projectId: string, isDeleted: boolean) {
   try {
     const project = await db
       .update(Project)
@@ -110,5 +110,32 @@ export async function updateProject(projectId: string, isDeleted:boolean) {
   } catch (error) {
     console.error("Database query error [PROJECT_TABLE]:", error);
     throw new Error("Failed to Update project Table");
+  }
+}
+
+// query to add new project
+export async function addProject(
+  title: string,
+  userId: string,
+  outlines:string[],
+) {
+  if (!userId) {
+    throw new Error("Invalid userId: userId is required");
+  }
+
+  try {
+    const newProject = await db
+      .insert(Project)
+      .values({
+        title: title,
+        userId: userId,
+        outlines: outlines,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }).returning();
+    return newProject[0];
+  } catch (error) {
+    console.error("Database query error [PROJECT_TABLE]:", error);
+    throw new Error("Failed to add new Project");
   }
 }

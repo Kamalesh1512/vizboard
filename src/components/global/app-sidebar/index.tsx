@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Project, User } from "@/db/schema";
 import React from "react";
 import {
@@ -16,11 +16,10 @@ import NavMain from "@/components/global/app-sidebar/nav-main";
 
 import { data } from "@/lib/constants";
 import { InferSelectModel } from "drizzle-orm";
+import { LayoutDashboard, LayoutDashboardIcon } from "lucide-react";
 
-
-type ProjectType = InferSelectModel<typeof Project>
-type UserType = InferSelectModel<typeof User>
-
+type ProjectType = InferSelectModel<typeof Project>;
+type UserType = InferSelectModel<typeof User>;
 
 const AppSidebar = ({
   recentProjects,
@@ -41,21 +40,24 @@ const AppSidebar = ({
           className="data-[state=open]:text-sidebar-accent-foreground gap-5"
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src={"/logo.png"} alt={"logo"} />
-            </Avatar>
+            <LayoutDashboard
+              className=""
+              size={45}
+              fill="bg-vivid-gradient"
+            />
           </div>
           <span className="truncate text-primary text-xl font-semibold">
             VizboardAI
+            <span className="text-smaller block text-muted-foreground ml-5">by BOOTSTRAP HUB</span>
           </span>
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent className="px-2 mt-10 gap-y-6">
-        <NavMain items={data.navMain}/>
-        <RecentOpen recentProjects={recentProjects || []}/>
+        <NavMain items={data.navMain} />
+        <RecentOpen recentProjects={recentProjects || []} />
       </SidebarContent>
-      <SidebarFooter >
-        <NavFooter drizzleUser={user}/>
+      <SidebarFooter>
+        <NavFooter drizzleUser={user} />
       </SidebarFooter>
     </Sidebar>
   );

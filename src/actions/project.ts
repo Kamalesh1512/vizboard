@@ -1,7 +1,8 @@
 "use server";
 import { error } from "console";
 import { onAuthenticateUser } from "./user";
-import { getUserProjects, getProjects, updateProject } from "@/db/queries";
+import { getUserProjects, getProjects, updateProject, addProject } from "@/db/queries";
+import { OutlineCard } from "@/lib/types";
 
 export const getAllProjects = async () => {
   try {
@@ -79,3 +80,27 @@ export const deleteProject = async (projectId: string) => {
   }
 }
 
+// action which creates a project
+export const generateProject = async (title:string , outlines:OutlineCard[]) => {
+  try {
+    const checkUser = await onAuthenticateUser();
+    if (checkUser.status !== 200 || !checkUser.user) {
+      return { status: 403, error: "⚠️ User Not Authenticated" };
+    }
+    if (!title || !outlines || outlines.length ===0) {
+      return {status :400,error:'Missing Fields are required'}
+    }
+    const allOutlines = outlines.map((outline)=> outline.title)
+
+    const projectAdded = await addProject(title,checkUser.user.id,allOutlines)
+
+    if (!projectAdded) {
+      return {status :500 , error: "Failed to generate project"}
+    }
+    return {status:200 , data: projectAdded}
+
+  } catch (error) {
+    console.log("⚠️ ERROR ", error);
+    return { status: 500, error: "Internal Server Error" };
+  }
+}

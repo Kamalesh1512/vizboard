@@ -32,7 +32,7 @@ const CreatePage = ({ onSelectionOptions }: CreatePageProps) => {
     >
       <motion.div variants={itemVariants} className="text-center space-y-2">
         <h1 className="text-4xl font-bold text-primary">
-          How Would you like to get started?
+          How would you like to get started?
         </h1>
         <p className="text-muted-foreground">
           Choose your preferred method to begin
