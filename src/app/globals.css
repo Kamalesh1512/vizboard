@@ -41,7 +41,7 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --creative-ai-gradient:linear-gradient(180deg, #F55C7A 0%, #F6BC66 100%);
+    --creative-ai-gradient:linear-gradient(180deg, #5c1dd2 0%, #D76D77 50%, #FFAF7B 100%);
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -89,7 +89,7 @@ body {
 }
 
 .text-vivid{
-  background: linear-gradient(180deg, #F55C7A 0%, #F6BC66 100%);
+  background: linear-gradient(180deg, #5c1dd2 0%, #D76D77 50%, #FFAF7B 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

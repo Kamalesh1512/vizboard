@@ -41,14 +41,13 @@ const AppSidebar = ({
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
             <LayoutDashboard
-              className=""
+              className="text-primary"
               size={45}
-              fill="bg-vivid-gradient"
             />
           </div>
           <span className="truncate text-primary text-xl font-semibold">
             VizboardAI
-            <span className="text-smaller block text-muted-foreground ml-5">by BOOTSTRAP HUB</span>
+            <span className="text-smaller block text-muted-foreground ml-3">by BOOTSTRAP HUB</span>
           </span>
         </SidebarMenuButton>
       </SidebarHeader>

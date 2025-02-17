@@ -66,6 +66,15 @@ export const itemVariants = {
 
 export const themes : Theme[] =[
   {
+    name:'Default',
+    fontFamily:' "Inter", sans-serif',
+    fontColor:'#333333',
+    backgroundColor:'#f0f0f0',
+    slideBackgroundColor:'#ffffff',
+    accentColor:'#3b82f6',
+    type:'light',
+  },
+  {
     name: 'Tech Vibrant',
     fontFamily: '"Roboto", sans-serif',
     fontColor: '#ffffff',
@@ -207,8 +216,8 @@ export const themes : Theme[] =[
     gradientBackground: 'linear-gradient(135deg, #5d4037 0%, #795548 100%)',
     navbarColor: '#795548',
     sidebarColor: '#5d4037',
-    type: 'dark',
-  }
+    type: 'dark',
+ }
 ]
 
 export const CreatePageCard = [

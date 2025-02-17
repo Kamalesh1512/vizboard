@@ -19,6 +19,10 @@ import usePromptStore from "@/store/usePromptStore";
 import RecentPrompts from "./RecentPrompts";
 import { useToast } from "@/hooks/use-toast";
 import { generateCreativePrompt } from "@/actions/genai";
+import { OutlineCard } from "@/lib/types";
+import { v4 } from "uuid";
+import { generateProject } from "@/actions/project";
+import { useSlideStore } from "@/store/useSlideStore";
 
 interface CreateAIProps {
   onBack: () => void;
@@ -40,9 +44,10 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const [noOfCards, setNoOfCards] = useState(0);
-  const {toast} = useToast();
+  const { toast } = useToast();
 
-  const {prompts,addPrompt} = usePromptStore()
+  const { prompts, addPrompt } = usePromptStore();
+  const {setProject} = useSlideStore()
 
   const resetCards = () => {
     setEditingCard(null);
@@ -53,21 +58,86 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
   };
 
   const generateOutline = async () => {
-    if (currentAiPrompt==="") {
+    if (currentAiPrompt === "") {
       toast({
-        variant:'destructive',
-        description:"Please enter prompt to generate an outline"
-      })
+        variant: "destructive",
+        description: "Please enter prompt to generate an outline",
+      });
     }
-    setIsGenerating(true)
-    const response = await generateCreativePrompt(currentAiPrompt)
+    setIsGenerating(true);
+    //openAI
+    const response = await generateCreativePrompt(currentAiPrompt);
+    if (response.status === 200 && response?.data?.outlines) {
+      const cardsData: OutlineCard[] = [];
 
-    //WIP - need to use OpenAI API
+      response?.data?.outlines.map((outline: string, index: number) => {
+        const newCard = {
+          id: v4(),
+          title: outline,
+          order: index + 1,
+        };
+        cardsData.push(newCard);
+      });
+      addMultipleOutlines(cardsData);
+      setNoOfCards(cardsData.length);
 
-    useEffect(()=>{
-      setNoOfCards(outlines.length)
-    },[outlines.length])
+      toast({
+        variant: "default",
+        description: "Outlines generated sucessfully",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        description: "Failed to generate outline. Please try again later.",
+      });
+    }
+    setIsGenerating(false)
   };
+
+  const handleGenerate =  async () =>{
+    setIsGenerating(true)
+    if (outlines.length===0) {
+      toast({
+        variant: "destructive",
+        description: "Please add atleast one card to generate slides",
+      });
+
+    }
+    try {
+      const response = await  generateProject(currentAiPrompt,outlines.slice(0,noOfCards))
+
+      if (response.status!==200 || !response.data) {
+        throw new Error('Unable to create project')
+      }
+      router.push(`/presentation/${response.data.id}/select-theme`)
+      setProject(response.data)
+
+      addPrompt({
+        id:v4(),
+        title: currentAiPrompt || outlines?.[0]?.title,
+        outlines:outlines,
+        createdAt:new Date(),
+      })
+      toast({
+        variant: "default",
+        description: "Project created successfully",
+      });
+      setCurrentAiPrompt('')
+      resetOutlines()
+    } catch (error) {
+    console.log(error)
+    toast({
+      variant: "destructive",
+      description: "Failed to create project",
+    });
+    }finally{
+      setIsGenerating(false)
+    }
+  }
+
+  useEffect(() => {
+    setNoOfCards(outlines.length);
+  }, [outlines.length]);
 
   return (
     <motion.div
@@ -191,14 +261,15 @@ const CreateAI = ({ onBack }: CreateAIProps) => {
         >
           {isGenerating ? (
             <>
-              <Loader2 className="animate-spin mr-2"/>Generating...
+              <Loader2 className="animate-spin mr-2" />
+              Generating...
             </>
           ) : (
-            'Generate'
+            "Generate"
           )}
         </Button>
       )}
-      {prompts.length>0? <RecentPrompts/>:""}
+      {prompts.length > 0 ? <RecentPrompts /> : ""}
     </motion.div>
   );
 };

@@ -97,6 +97,20 @@ export async function getProjects(userId: string, isDeleted: boolean) {
     throw new Error("Failed to fetch projects");
   }
 }
+//query to get specific project based on projectId
+export async function getProjectBasedOnId(projectId: string) {
+  try {
+    const projects = await db
+      .select()
+      .from(Project)
+      .where(and(eq(Project.id, projectId), eq(Project.isDeleted, false)));
+
+    return projects[0];
+  } catch (error) {
+    console.error("Database query error [PROJECT_TABLE]:", error);
+    throw new Error("Failed to fetch projects");
+  }
+}
 
 // query to update the project
 export async function updateProject(projectId: string, isDeleted: boolean) {

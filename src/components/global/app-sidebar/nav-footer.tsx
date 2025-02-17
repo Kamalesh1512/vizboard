@@ -38,7 +38,7 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
               </div>
               <div className="w-full bg-vivid-gradient p-[1px] rounded-full">
                 <Button
-                  className="w-ful border-vivid bg-primary-foreground hover:bg-primary-foreground text-primary rounded-full font-bold"
+                  className="w-full border-vivid bg-primary-foreground hover:bg-primary-foreground text-primary rounded-full font-bold"
                   variant={"outline"}
                   size={"lg"}
                   // onClick={handleUpgrade}
