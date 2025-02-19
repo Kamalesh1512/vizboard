@@ -55,7 +55,7 @@ export const recoverProject = async (projectId: string) => {
     if (checkUser.status !== 200 || !checkUser.user) {
       return { status: 403, error: "⚠️ User Not Authenticated" };
     }
-    const updatedProject = await updateProject(projectId, false);
+    const updatedProject = await updateProject(projectId, {"isDeleted":false});
 
     if (!updatedProject) {
       return { status: 500, error: " Failed to recover project" };
@@ -73,7 +73,7 @@ export const deleteProject = async (projectId: string) => {
     if (checkUser.status !== 200 || !checkUser.user) {
       return { status: 403, error: "⚠️ User Not Authenticated" };
     }
-    const updatedProject = await updateProject(projectId, true);
+    const updatedProject = await updateProject(projectId, {"isDeleted":true});
 
     if (!updatedProject) {
       return { status: 500, error: "Failed to delete project" };

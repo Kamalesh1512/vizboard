@@ -113,11 +113,11 @@ export async function getProjectBasedOnId(projectId: string) {
 }
 
 // query to update the project
-export async function updateProject(projectId: string, isDeleted: boolean) {
+export async function updateProject(projectId: string, updates:Record<string, string | number | boolean>,) {
   try {
     const project = await db
       .update(Project)
-      .set({ isDeleted: isDeleted })
+      .set(updates)
       .where(eq(Project.id, projectId));
 
     return project;

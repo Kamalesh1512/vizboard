@@ -3,7 +3,8 @@ import ThemePreview from './_components/ThemePreview'
 
 const Page = () => {
   return (
-    <ThemePreview/>
+    <div><ThemePreview/></div>
+
   )
 }
 

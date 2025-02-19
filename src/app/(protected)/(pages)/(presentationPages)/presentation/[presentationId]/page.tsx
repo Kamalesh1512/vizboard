@@ -8,10 +8,12 @@ import { useTheme } from "next-themes";
 import { redirect, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import NavBar from "./_components/NavBar";
 
 type Props = {}
 
-export const page = (props:Props) => {
+const Page = (props:Props) => {
   const params = useParams();
   const {toast} = useToast()
   const { setTheme } = useTheme();
@@ -51,6 +53,11 @@ export const page = (props:Props) => {
         <Loader2Icon className="w-8 h-8 animate-spin text-primary"/>
     </div>)
   }
-  //wip presentation page
-//   return <DndProvider></DndProvider>;
+  //presentation editor page
+  return <DndProvider backend={HTML5Backend}>
+    <div className="min-h-screen flex flex-col">
+      <NavBar presentationId={params.presentationId as string}/>
+    </div>
+  </DndProvider>;
 };
+export default Page;

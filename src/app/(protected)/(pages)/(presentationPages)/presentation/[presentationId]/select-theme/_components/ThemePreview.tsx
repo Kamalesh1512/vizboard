@@ -1,3 +1,4 @@
+"use client";
 import { useSlideStore } from "@/store/useSlideStore";
 import { useParams, useRouter } from "next/navigation";
 import { useAnimation } from "framer-motion";
@@ -7,6 +8,8 @@ import { Theme } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import ThemeCard from "./ThemeCard";
+import ThemePicker from "./ThemePicker";
+import { themes } from "@/lib/constants";
 
 const ThemePreview = () => {
   const params = useParams();
@@ -142,38 +145,132 @@ const ThemePreview = () => {
       </Button>
     </div>
   );
+  const applyTheme = (theme: Theme) => {
+    setSelectedTheme(theme);
+    setCurrentTheme(theme);
+  };
   return (
-    <div
-      className="h-screen w-full flex"
+  //   <div
+  //     className="h-screen w-full flex"
+  //     style={{
+  //       backgroundColor: selectedTheme.backgroundColor,
+  //       color: selectedTheme.accentColor,
+  //       fontFamily: selectedTheme.fontFamily,
+  //     }}
+  //   >
+  //     <div className="flex flex-grow overflow-y-auto">
+  //       <div className="p-12 flex flex-col items-center max-h-screen">
+  //         <Button
+  //           variant={"outline"}
+  //           className="mb-12 self-start"
+  //           size={"lg"}
+  //           style={{
+  //             backgroundColor: selectedTheme.accentColor + "10",
+  //             color: selectedTheme.accentColor,
+  //             borderBlock: selectedTheme.accentColor + "20",
+  //           }}
+  //           onClick={() => router.push("/create-page")}
+  //         >
+  //           <ArrowLeft className="mr-2 h-5 w-5" />
+  //           Back
+  //         </Button>
+  //         <div className="w-[500px] justify-center items-center mt-10">
+  //           <ThemeCard
+  //             title="Quick Start"
+  //             description="Get up and running in no time"
+  //             content={leftCardContent}
+  //             variant="left"
+  //             theme={selectedTheme}
+  //             controls={controls}
+  //           />
+  //           <ThemeCard
+  //             title="Main Preview"
+  //             description="This is the main theme preview card"
+  //             content={mainCardContent}
+  //             variant="main"
+  //             theme={selectedTheme}
+  //             controls={controls}
+  //           />
+  //           <ThemeCard
+  //             title="Theme Features"
+  //             description="Discover what our themes can do"
+  //             content={rightCardContent}
+  //             variant="right"
+  //             theme={selectedTheme}
+  //             controls={controls}
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <ThemePicker
+  //       selectedTheme={selectedTheme}
+  //       themes={themes}
+  //       onThemeSelect={applyTheme}
+  //     />
+  //   </div>
+  // );
+  <div
+  className="h-screen w-full flex"
+  style={{
+    backgroundColor: selectedTheme.backgroundColor,
+    color: selectedTheme.accentColor,
+    fontFamily: selectedTheme.fontFamily,
+  }}
+>
+  <div className="flex flex-grow overflow-y-auto relative">
+    {/* Back Button - Positioned at the top left */}
+    <Button
+      variant={"outline"}
+      className="absolute top-5 left-5"
+      size={"lg"}
       style={{
-        backgroundColor: selectedTheme.backgroundColor,
+        backgroundColor: selectedTheme.accentColor + "10",
         color: selectedTheme.accentColor,
-        fontFamily: selectedTheme.fontFamily,
+        borderBlock: selectedTheme.accentColor + "20",
       }}
+      onClick={() => router.push("/create-page")}
     >
-      <div className="flex flex-grow overflow-y-auto">
-        <div className="p-12 flex flex-col items-center max-h-screen">
-          <Button
-            variant={"outline"}
-            className="mb-12 self-start"
-            size={"lg"}
-            style={{
-              backgroundColor: selectedTheme.accentColor + "10",
-              color: selectedTheme.accentColor,
-              borderBlock: selectedTheme.accentColor + "20",
-            }}
-            onClick={() => router.push("/create-page")}
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            Back
-          </Button>
-          <div className="w-full flex justify-center items-center">
-          {/* <ThemeCard/> */}
-          </div>
-        </div>
+      <ArrowLeft className="mr-2 h-5 w-5" />
+      Back
+    </Button>
+
+    <div className="p-12 flex flex-col items-center max-h-screen">
+      <div className="w-full justify-center items-center">
+        <ThemeCard
+          title="Quick Start"
+          description="Get up and running in no time"
+          content={leftCardContent}
+          variant="left"
+          theme={selectedTheme}
+          controls={controls}
+        />
+        <ThemeCard
+          title="Main Preview"
+          description="This is the main theme preview card"
+          content={mainCardContent}
+          variant="main"
+          theme={selectedTheme}
+          controls={controls}
+        />
+        <ThemeCard
+          title="Theme Features"
+          description="Discover what our themes can do"
+          content={rightCardContent}
+          variant="right"
+          theme={selectedTheme}
+          controls={controls}
+        />
       </div>
     </div>
-  );
+  </div>
+
+  <ThemePicker
+    selectedTheme={selectedTheme}
+    themes={themes}
+    onThemeSelect={applyTheme}
+  />
+</div>
+  )
 };
 
 export default ThemePreview;

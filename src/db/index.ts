@@ -45,11 +45,8 @@ if (!DATABASE_URL) {
     throw new Error("DATABASE_URL is not defined");
 }
 
-declare global {
-    var dbPool: Pool | undefined;
-}
 
-const pool = global.dbPool || new Pool({
+const pool = new Pool({
     connectionString: DATABASE_URL,
       ssl: {
     rejectUnauthorized: false,
@@ -57,12 +54,9 @@ const pool = global.dbPool || new Pool({
   },
     max: 5,
     idleTimeoutMillis: 10000,
-    // connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 5000,
 });
 
-if (process.env.NODE_ENV !== "production") {
-    global.dbPool = pool;
-}
 
 export const db = drizzle(pool);
 
