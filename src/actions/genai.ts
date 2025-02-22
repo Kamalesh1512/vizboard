@@ -164,7 +164,7 @@ export const generateLayoutsJson = async (outlineArray: string[]) => {
         },
         { role: "user", content: prompt },
       ],
-      max_tokens: 5000,
+      // max_tokens: 400,
       temperature: 0.7,
     });
     const responseContent = completion?.choices?.[0]?.message?.content;
@@ -197,7 +197,7 @@ export const generateLayouts = async (projectId: string, theme: string) => {
     }
     const user = await currentUser();
     if (!user) {
-      return { status: 403, error: "USer not authenticated" };
+      return { status: 403, error: "User not authenticated" };
     }
     const existingUser = await getUserById(user.id);
 

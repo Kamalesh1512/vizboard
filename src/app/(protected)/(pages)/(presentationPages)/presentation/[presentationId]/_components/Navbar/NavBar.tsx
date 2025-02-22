@@ -60,6 +60,7 @@ const NavBar = ({ presentationId }: NavBarProps) => {
         </Button>
       </div>
       {/* add presentation mode */}
+      {/* {isPresentationMode && <PresentationMode/>} */}
     </nav>
   );
 };

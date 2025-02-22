@@ -4,7 +4,7 @@ export interface Slide {
   type: string;
   content: ContentItem;
   slideOrder: number;
-  className: string;
+  className?: string;
 }
 export type ContentType =
   | 'column'   
@@ -47,7 +47,7 @@ export interface ContentItem {
   restrictToDrop?:boolean
   columns?:number
   placeholder?:string
-  className:string
+  className?:string
   alt?:string
   callOutTypes?:'success' | 'warning' | 'info' | 'question' | 'caution'
   link?:string
@@ -74,4 +74,11 @@ export interface OutlineCard {
   title: string
   id:string
   order:number
+}
+
+export interface LayoutSlides {
+  slideName:string
+  content: ContentItem
+  className?:string
+  type:string
 }
