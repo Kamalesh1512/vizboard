@@ -14,6 +14,8 @@ import DropZone from "./DropZone";
 import Paragraph from "./components/Paragraph";
 import Table from "./components/Table";
 import Column from "./components/Column";
+import CustomImage from "./components/ImageComponent";
+import BlockQuote from "./components/BlockQuote";
 
 interface MasterRecursiveProps {
   content: ContentItem;
@@ -119,21 +121,55 @@ const ContentRenderer: React.FC<MasterRecursiveProps> = React.memo(
             </motion.div>
           );
         }
-        return null
+        return null;
 
-        case 'image':
-          return ( 
-            <motion.div {...animationProps}
-            className="w-full h-full">
-              
-            </motion.div>
-          )
+      case "image":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <CustomImage
+              alt={content.alt || "image"}
+              src={content.content as string}
+              className={content.className}
+              isPreview={isPreview}
+              contentId={content.id}
+              onContentChange={onContentChange}
+              isEditable={isEditable}
+            />
+          </motion.div>
+        );
+
+      case "blockquote":
+        return (
+          <motion.div
+            {...animationProps}
+            className={cn("w-full h-full flex flex-col", content.className)}
+          >
+            <BlockQuote>
+              <Paragraph {...commmonProps} />
+            </BlockQuote>
+          </motion.div>
+        );
+
+        // case 'numberedList':
+        //   return (
+        //     <motion.div
+        //       {...animationProps}
+        //       className={cn("w-full h-full", content.className)}
+        //     >
+        //       <NumberedList
+        //       items = {content.content as string[]}
+        //       onChange = {(newItems) => onContentChange(content.id , newItems)}
+        //       className = {content.className} />
+        //     </motion.div>
+        //   );
+
+
       case "column":
         if (Array.isArray(content.content)) {
           return (
             <motion.div
               {...animationProps}
-              className={cn("w-full h-full flex flex-col", content.className)}
+              className={cn("w-full h-full flex flex-col text-lg", content.className)}
             >
               {content.content.length > 0 ? (
                 (content.content as ContentItem[]).map(
@@ -204,7 +240,7 @@ export const MasterRecursive: React.FC<MasterRecursiveProps> = React.memo(
           slideId={slideId}
           index={index}
         />
-      );
+      ); 
     }
     <React.Fragment>
       <ContentRenderer

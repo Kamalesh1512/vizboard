@@ -125,14 +125,14 @@ const DraggableSlides: React.FC<DraggableSlidesProps> = ({
         <MasterRecursive
           content={slide.content}
           isEditable={isEditable}
-          isPreview={false}
+          isPreview={true}
           slideId={slide.id}
           onContentChange={handleContentChange}
         />
       </div>
       {isEditable && (
         <Popover>
-          <PopoverTrigger asChild className="absolute top-2 left-2">
+          <PopoverTrigger asChild className="absolute top-2 right-2">
             <Button variant={"outline"} size={"sm"}>
               <EllipsisVertical className="w-5 h-5" />
               <span className="sr-only">Slide options</span>

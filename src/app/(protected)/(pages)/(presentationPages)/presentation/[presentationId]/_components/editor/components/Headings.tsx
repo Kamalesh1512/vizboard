@@ -28,7 +28,7 @@ const createHeading = (displayName: string, defaultClassName: string) => {
       return (
         <textarea
           className={cn(
-            `w-full bg-transparent ${defaultClassName} ${previewClassName}
+            `m-5 w-full bg-transparent ${defaultClassName} ${previewClassName}
             font-normal text-gray-900 placeholder:text-gray-300
             focus:outline-none resize-none overflow-hidden leading-tight`,
             className
@@ -60,7 +60,7 @@ const Heading1 = createHeading("Heading1", "text-4xl");
 const Heading2 = createHeading("Heading2", "text-3xl");
 const Heading3 = createHeading("Heading3", "text-2xl");
 const Heading4 = createHeading("Heading2", "text-xl");
-const Title = createHeading("Title", "text-3xl");
+const Title = createHeading("Title", "text-4xl");
 
 
 export { Heading1,Heading2,Heading3,Heading4,Title };

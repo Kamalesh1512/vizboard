@@ -156,7 +156,7 @@ export const generateLayoutsJson = async (outlineArray: string[]) => {
   try {
     console.log("Generating Layouts...");
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo-0125",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -171,13 +171,12 @@ export const generateLayoutsJson = async (outlineArray: string[]) => {
     if (!responseContent) {
       return { status: 400, error: "No content generated" };
     }
+    let jsonResponse;
     try {
-      const jsonOutput = responseContent.match(/{[\s\S]*}/);
-      let jsonResponse;
-      if (jsonOutput) {
-        const jsonResponse = JSON.parse(jsonOutput[0]);
+        const jsonResponse = JSON.parse(responseContent.replace(/```json|```/g, ''))
+      
         await Promise.all(jsonResponse.map(replaceImagePlaceholders));
-      }
+  
       console.log("Layout generation successful");
       return { status: 200, data: jsonResponse };
     } catch (error) {

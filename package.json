@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.26.0",
     "@clerk/nextjs": "^6.11.2",
     "@clerk/themes": "^2.2.2",
     "@hookform/resolvers": "^4.0.0",
