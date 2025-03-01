@@ -133,3 +133,23 @@ export const getProjectById = async (projectId: string) => {
     return { status: 500, error: "Internal Server Error" };
   }
 };
+
+
+
+export const updateSlides = async (projectId: string,slides: JSON) => {
+  try {
+
+    if (!projectId || !slides) {
+      return {status:400 ,error:'Project ID and slides are required'}
+    }
+
+    const updatedProject = await updateProject(projectId, {slides:slides});
+    if (!updatedProject) {
+      return { status: 500, error: "Failed to update slides" };
+    }
+    return { status: 200, data: updateProject };
+  } catch (error) {
+    console.log("⚠️ ERROR ", error);
+    return { status: 500, error: "Internal Server Error" };
+  }
+};

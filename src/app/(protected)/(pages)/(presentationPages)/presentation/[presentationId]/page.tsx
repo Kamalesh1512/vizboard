@@ -12,6 +12,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import NavBar from "./_components/Navbar/NavBar";
 import LayoutPreview from "./_components/editor-sidebar/left-sidebar/LayoutPreview";
 import Editor from "@/app/(protected)/(pages)/(presentationPages)/presentation/[presentationId]/_components/editor/Editor";
+import EditorRightSideBar from "./_components/editor-sidebar/right-sidebar";
 
 type Props = {};
 
@@ -75,6 +76,7 @@ const Page = (props: Props) => {
           <div className="flex-1 ml-64 pr-16">
             <Editor isEditable={true} />
           </div>
+          <EditorRightSideBar/>
         </div>
       </div>
     </DndProvider>

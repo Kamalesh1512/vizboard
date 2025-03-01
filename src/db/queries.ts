@@ -113,7 +113,7 @@ export async function getProjectBasedOnId(projectId: string) {
 }
 
 // query to update the project
-export async function updateProject(projectId: string, updates:Record<string, string | number | boolean>,) {
+export async function updateProject(projectId: string, updates:Record<string, string | number | boolean | JSON>,) {
   try {
     const project = await db
       .update(Project)

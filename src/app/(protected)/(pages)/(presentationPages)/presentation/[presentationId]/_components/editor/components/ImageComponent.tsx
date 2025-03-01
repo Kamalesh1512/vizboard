@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import UploadImage from "./UploadImage";
 
 interface ImageProps {
   src: string;
@@ -34,7 +35,7 @@ const CustomImage = ({
       />
       {!isPreview && isEditable && 
       <div className="absolute top-0 hidden group-hover:block"> 
-      
+      <UploadImage/>
       </div>}
     </div>
   );

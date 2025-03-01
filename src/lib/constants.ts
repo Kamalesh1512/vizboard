@@ -6,8 +6,38 @@ import {
   Settings2,
   Trash2,
 } from "lucide-react";
-import { ContentType, Theme } from "./types";
+import { ContentType, LayoutGroup, Theme } from "./types";
 import { v4 } from "uuid";
+import {
+  BlankCardIcon,
+  FourColumnsIcon,
+  ImageAndTextIcon,
+  TextAndImageIcon,
+  ThreeColumnsIcon,
+  ThreeColumnsWithHeadingsIcon,
+  ThreeImageColumnsIcon,
+  TwoColumnsIcon,
+  TwoColumnsWithHeadingsIcon,
+  TwoImageColumnsIcon,
+  BulletsIcon,
+  FourImageColumnsIcon,
+} from "@/icons/IconsComponent";
+import {
+  BlankCard,
+  AccentLeft,
+  AccentRight,
+  FourColumns,
+  FourImageColumns,
+  ImageAndText,
+  TableLayout,
+  TextAndImage,
+  ThreeColumns,
+  ThreeColumnsWithHeadings,
+  ThreeImageColumns,
+  TwoColumns,
+  TwoColumnsWithHeadings,
+  TwoImageColumns
+} from "./slideLayouts";
 
 export const data = {
   user: {
@@ -51,19 +81,17 @@ export const containerVariants = {
   },
 };
 
-
 export const itemVariants = {
-  hidden: { y:20, opacity: 0 },
+  hidden: { y: 20, opacity: 0 },
   visible: {
-    y:0,
+    y: 0,
     opacity: 1,
     transition: {
-      type:'spring',
+      type: "spring",
       stiffness: 100,
     },
   },
 };
-
 
 export const themes: Theme[] = [
   {
@@ -329,7 +357,8 @@ export const themes: Theme[] = [
     type: "light",
   },
   {
-    name: "Urban Jungle",fontFamily: "'Karla', sans-serif",
+    name: "Urban Jungle",
+    fontFamily: "'Karla', sans-serif",
     fontColor: "#2d3748",
     backgroundColor: "#e6fffa",
     slideBackgroundColor: "#ffffff",
@@ -365,52 +394,48 @@ export const themes: Theme[] = [
   },
 ];
 
-
 export const CreatePageCard = [
   {
-    title : 'Use a',
-    highlightedText: 'Template',
-    description : 'Write a prompt and leave everything else for us to handle',
-    type: 'template',
-    buttonText:'Continue',
+    title: "Use a",
+    highlightedText: "Template",
+    description: "Write a prompt and leave everything else for us to handle",
+    type: "template",
+    buttonText: "Continue",
   },
   {
-    title : 'Generate with',
-    highlightedText: 'Creative AI',
-    description : 'Write a prompt and leave everything else for us to handle',
-    type: 'creative-ai',
-    highlight:true,
-    buttonText:'Generate',
-
+    title: "Generate with",
+    highlightedText: "Creative AI",
+    description: "Write a prompt and leave everything else for us to handle",
+    type: "creative-ai",
+    highlight: true,
+    buttonText: "Generate",
   },
   {
-    title : 'Start from',
-    highlightedText: 'Scratch',
-    description : 'Write a prompt and leave everything else for us to handle',
-    type: 'create-scratch',
-    buttonText:'Create',
+    title: "Start from",
+    highlightedText: "Scratch",
+    description: "Write a prompt and leave everything else for us to handle",
+    type: "create-scratch",
+    buttonText: "Create",
   },
-
-]
-
+];
 
 export const existingLayouts = [
   {
     id: v4(),
-    slideName: 'Blank card',
-    type: 'blank-card',
-    className: 'p-8 mx-auto flex justify-center items-center min-h-[200px]',
+    slideName: "Blank card",
+    type: "blank-card",
+    className: "p-8 mx-auto flex justify-center items-center min-h-[200px]",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'title' as ContentType,
-          name: 'Title',
-          content: '',
-          placeholder: 'Untitled Card',
+          type: "title" as ContentType,
+          name: "Title",
+          content: "",
+          placeholder: "Untitled Card",
         },
       ],
     },
@@ -418,51 +443,51 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Accent left',
-    type: 'accentLeft',
-    className: 'min-h-[300px]',
+    slideName: "Accent left",
+    type: "accentLeft",
+    className: "min-h-[300px]",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       restrictDropTo: true,
       content: [
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Resizable column',
+          type: "resizable-column" as ContentType,
+          name: "Resizable column",
           restrictToDrop: true,
           content: [
             {
               id: v4(),
-              type: 'image' as ContentType,
-              name: 'Image',
+              type: "image" as ContentType,
+              name: "Image",
               content:
-                'https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              alt: 'Title',
+                "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              alt: "Title",
             },
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'heading1' as ContentType,
-                  name: 'Heading1',
-                  content: '',
-                  placeholder: 'Heading1',
+                  type: "heading1" as ContentType,
+                  name: "Heading1",
+                  content: "",
+                  placeholder: "Heading1",
                 },
                 {
                   id: v4(),
-                  type: 'paragraph' as ContentType,
-                  name: 'Paragraph',
-                  content: '',
-                  placeholder: 'start typing here',
+                  type: "paragraph" as ContentType,
+                  name: "Paragraph",
+                  content: "",
+                  placeholder: "start typing here",
                 },
               ],
-              className: 'w-full h-full p-8 flex justify-center items-center',
-              placeholder: 'Heading1',
+              className: "w-full h-full p-8 flex justify-center items-center",
+              placeholder: "Heading1",
             },
           ],
         },
@@ -472,51 +497,51 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Accent Right',
-    type: 'accentRight',
-    className: 'min-h-[300px]',
+    slideName: "Accent Right",
+    type: "accentRight",
+    className: "min-h-[300px]",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Resizable column',
+          type: "resizable-column" as ContentType,
+          name: "Resizable column",
           restrictToDrop: true,
           content: [
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'heading1' as ContentType,
-                  name: 'Heading1',
-                  content: '',
-                  placeholder: 'Heading1',
+                  type: "heading1" as ContentType,
+                  name: "Heading1",
+                  content: "",
+                  placeholder: "Heading1",
                 },
                 {
                   id: v4(),
-                  type: 'paragraph' as ContentType,
-                  name: 'Paragraph',
-                  content: '',
-                  placeholder: 'start typing here',
+                  type: "paragraph" as ContentType,
+                  name: "Paragraph",
+                  content: "",
+                  placeholder: "start typing here",
                 },
               ],
-              className: 'w-full h-full p-8 flex justify-center items-center',
-              placeholder: 'Heading1',
+              className: "w-full h-full p-8 flex justify-center items-center",
+              placeholder: "Heading1",
             },
             {
               id: v4(),
-              type: 'image' as ContentType,
-              name: 'Image',
+              type: "image" as ContentType,
+              name: "Image",
               restrictToDrop: true,
               content:
-                'https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              alt: 'Title',
+                "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              alt: "Title",
             },
           ],
         },
@@ -526,58 +551,58 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Image and text',
-    type: 'imageAndText',
-    className: 'min-h-[200px] p-8 mx-auto flex justify-center items-center',
+    slideName: "Image and text",
+    type: "imageAndText",
+    className: "min-h-[200px] p-8 mx-auto flex justify-center items-center",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Image and text',
-          className: 'border',
+          type: "resizable-column" as ContentType,
+          name: "Image and text",
+          className: "border",
           content: [
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'image' as ContentType,
-                  name: 'Image',
-                  className: 'p-3',
+                  type: "image" as ContentType,
+                  name: "Image",
+                  className: "p-3",
                   content:
-                    'https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                  alt: 'Title',
+                    "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  alt: "Title",
                 },
               ],
             },
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'heading1' as ContentType,
-                  name: 'Heading1',
-                  content: '',
-                  placeholder: 'Heading1',
+                  type: "heading1" as ContentType,
+                  name: "Heading1",
+                  content: "",
+                  placeholder: "Heading1",
                 },
                 {
                   id: v4(),
-                  type: 'paragraph' as ContentType,
-                  name: 'Paragraph',
-                  content: '',
-                  placeholder: 'start typing here',
+                  type: "paragraph" as ContentType,
+                  name: "Paragraph",
+                  content: "",
+                  placeholder: "start typing here",
                 },
               ],
-              className: 'w-full h-full p-8 flex justify-center items-center',
-              placeholder: 'Heading1',
+              className: "w-full h-full p-8 flex justify-center items-center",
+              placeholder: "Heading1",
             },
           ],
         },
@@ -587,56 +612,56 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Text and image',
-    type: 'textAndImage',
-    className: 'min-h-[200px] p-8 mx-auto flex justify-center items-center',
+    slideName: "Text and image",
+    type: "textAndImage",
+    className: "min-h-[200px] p-8 mx-auto flex justify-center items-center",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Text and image',
-          className: 'border',
+          type: "resizable-column" as ContentType,
+          name: "Text and image",
+          className: "border",
           content: [
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: '',
+              type: "column" as ContentType,
+              name: "",
               content: [
                 {
                   id: v4(),
-                  type: 'heading1' as ContentType,
-                  name: 'Heading1',
-                  content: '',
-                  placeholder: 'Heading1',
+                  type: "heading1" as ContentType,
+                  name: "Heading1",
+                  content: "",
+                  placeholder: "Heading1",
                 },
                 {
                   id: v4(),
-                  type: 'paragraph' as ContentType,
-                  name: 'Paragraph',
-                  content: '',
-                  placeholder: 'start typing here',
+                  type: "paragraph" as ContentType,
+                  name: "Paragraph",
+                  content: "",
+                  placeholder: "start typing here",
                 },
               ],
-              className: 'w-full h-full p-8 flex justify-center items-center',
-              placeholder: 'Heading1',
+              className: "w-full h-full p-8 flex justify-center items-center",
+              placeholder: "Heading1",
             },
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'image' as ContentType,
-                  name: 'Image',
-                  className: 'p-3',
+                  type: "image" as ContentType,
+                  name: "Image",
+                  className: "p-3",
                   content:
-                    'https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                  alt: 'Title',
+                    "https://plus.unsplash.com/premium_photo-1729004379397-ece899804701?q=80&w=2767&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  alt: "Title",
                 },
               ],
             },
@@ -648,40 +673,40 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Two columns',
-    type: 'twoColumns',
-    className: 'p-4 mx-auto flex justify-center items-center',
+    slideName: "Two columns",
+    type: "twoColumns",
+    className: "p-4 mx-auto flex justify-center items-center",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'title' as ContentType,
-          name: 'Title',
-          content: '',
-          placeholder: 'Untitled Card',
+          type: "title" as ContentType,
+          name: "Title",
+          content: "",
+          placeholder: "Untitled Card",
         },
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Text and image',
-          className: 'border',
+          type: "resizable-column" as ContentType,
+          name: "Text and image",
+          className: "border",
           content: [
             {
               id: v4(),
-              type: 'paragraph' as ContentType,
-              name: 'Paragraph',
-              content: '',
-              placeholder: 'Start typing...',
+              type: "paragraph" as ContentType,
+              name: "Paragraph",
+              content: "",
+              placeholder: "Start typing...",
             },
             {
               id: v4(),
-              type: 'paragraph' as ContentType,
-              name: 'Paragraph',
-              content: '',
-              placeholder: 'Start typing...',
+              type: "paragraph" as ContentType,
+              name: "Paragraph",
+              content: "",
+              placeholder: "Start typing...",
             },
           ],
         },
@@ -691,66 +716,66 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Two columns with headings',
-    type: 'twoColumnsWithHeadings',
-    className: 'p-4 mx-auto flex justify-center items-center',
+    slideName: "Two columns with headings",
+    type: "twoColumnsWithHeadings",
+    className: "p-4 mx-auto flex justify-center items-center",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'title' as ContentType,
-          name: 'Title',
-          content: '',
-          placeholder: 'Untitled Card',
+          type: "title" as ContentType,
+          name: "Title",
+          content: "",
+          placeholder: "Untitled Card",
         },
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Text and image',
-          className: 'border',
+          type: "resizable-column" as ContentType,
+          name: "Text and image",
+          className: "border",
           content: [
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'heading3' as ContentType,
-                  name: 'Heading3',
-                  content: '',
-                  placeholder: 'Heading 3',
+                  type: "heading3" as ContentType,
+                  name: "Heading3",
+                  content: "",
+                  placeholder: "Heading 3",
                 },
                 {
                   id: v4(),
-                  type: 'paragraph' as ContentType,
-                  name: 'Paragraph',
-                  content: '',
-                  placeholder: 'Start typing...',
+                  type: "paragraph" as ContentType,
+                  name: "Paragraph",
+                  content: "",
+                  placeholder: "Start typing...",
                 },
               ],
             },
             {
               id: v4(),
-              type: 'column' as ContentType,
-              name: 'Column',
+              type: "column" as ContentType,
+              name: "Column",
               content: [
                 {
                   id: v4(),
-                  type: 'heading3' as ContentType,
-                  name: 'Heading3',
-                  content: '',
-                  placeholder: 'Heading 3',
+                  type: "heading3" as ContentType,
+                  name: "Heading3",
+                  content: "",
+                  placeholder: "Heading 3",
                 },
                 {
                   id: v4(),
-                  type: 'paragraph' as ContentType,
-                  name: 'Paragraph',
-                  content: '',
-                  placeholder: 'Start typing...',
+                  type: "paragraph" as ContentType,
+                  name: "Paragraph",
+                  content: "",
+                  placeholder: "Start typing...",
                 },
               ],
             },
@@ -762,51 +787,163 @@ export const existingLayouts = [
 
   {
     id: v4(),
-    slideName: 'Three column',
-    type: 'threeColumns',
-    className: 'p-4 mx-auto flex justify-center items-center',
+    slideName: "Three column",
+    type: "threeColumns",
+    className: "p-4 mx-auto flex justify-center items-center",
     content: {
       id: v4(),
-      type: 'column' as ContentType,
-      name: 'Column',
+      type: "column" as ContentType,
+      name: "Column",
       content: [
         {
           id: v4(),
-          type: 'title' as ContentType,
-          name: 'Title',
-          content: '',
-          placeholder: 'Untitled Card',
+          type: "title" as ContentType,
+          name: "Title",
+          content: "",
+          placeholder: "Untitled Card",
         },
         {
           id: v4(),
-          type: 'resizable-column' as ContentType,
-          name: 'Text and image',
-          className: 'border',
+          type: "resizable-column" as ContentType,
+          name: "Text and image",
+          className: "border",
           content: [
             {
               id: v4(),
-              type: 'paragraph' as ContentType,
-              name: '',
-              content: '',
-              placeholder: 'Start typing...',
+              type: "paragraph" as ContentType,
+              name: "",
+              content: "",
+              placeholder: "Start typing...",
             },
             {
               id: v4(),
-              type: 'paragraph' as ContentType,
-              name: '',
-              content: '',
-              placeholder: 'Start typing...',
+              type: "paragraph" as ContentType,
+              name: "",
+              content: "",
+              placeholder: "Start typing...",
             },
             {
               id: v4(),
-              type: 'paragraph' as ContentType,
-              name: '',
-              content: '',
-              placeholder: 'Start typing...',
+              type: "paragraph" as ContentType,
+              name: "",
+              content: "",
+              placeholder: "Start typing...",
             },
           ],
         },
       ],
     },
   },
-]
+];
+
+export const layouts: LayoutGroup[] = [
+  {
+    name: "Basic",
+    layouts: [
+      {
+        name: "Blank card",
+        icon: BlankCardIcon,
+        type: "layout",
+        layoutType: "blank-card",
+        component: BlankCard,
+      },
+      {
+        name: "Image and text",
+        icon: ImageAndTextIcon,
+        type: "layout",
+        layoutType: "imageAndText",
+        component: ImageAndText,
+      },
+      {
+        name: "Text and image",
+        icon: TextAndImageIcon,
+        type: "layout",
+        layoutType: "textAndImage",
+        component: TextAndImage,
+      },
+      {
+        name: "Two Columns",
+        icon: TwoColumnsIcon,
+        type: "layout",
+        layoutType: "twoColumns",
+        component: TwoColumns,
+      },
+      {
+        name: "Two Columns with headings",
+        icon: TwoColumnsWithHeadingsIcon,
+        type: "layout",
+        layoutType: "twoColumnsWithHeadings",
+        component: TwoColumnsWithHeadings,
+      },
+      {
+        name: "Three Columns",
+        icon: ThreeColumnsIcon,
+        type: "layout",
+        layoutType: "threeColumns",
+        component: ThreeColumns,
+      },
+      {
+        name: "Three Columns with headings",
+        icon: ThreeColumnsWithHeadingsIcon,
+        type: "layout",
+        layoutType: "threeColumnsWithHeadings",
+        component: ThreeColumnsWithHeadings,
+      },
+
+      {
+        name: "Four Columns",
+        icon: FourColumnsIcon,
+        type: "layout",
+        layoutType: "fourColumns",
+        component: FourColumns,
+      },
+    ],
+  },
+
+  {
+    name: "Card layouts",
+    layouts: [
+      {
+        name: "Accent left",
+        icon: ImageAndTextIcon,
+        type: "layout",
+        layoutType: "accentLeft",
+        component: AccentLeft,
+      },
+      {
+        name: "Accent right",
+        icon: TextAndImageIcon,
+        type: "layout",
+        layoutType: "accentRight",
+        component: AccentRight,
+      },
+    ],
+  },
+
+  {
+    name: "Images",
+    layouts: [
+      {
+        name: "2 images columns",
+        icon: TwoImageColumnsIcon,
+        type: "layout",
+        layoutType: "twoImageColumns",
+        component: TwoImageColumns,
+      },
+      {
+        name: "3 images columns",
+        icon: ThreeImageColumnsIcon,
+        type: "layout",
+        layoutType: "threeImageColumns",
+        component: ThreeImageColumns,
+      },
+      {
+        name: "4 images columns",
+        icon: FourImageColumnsIcon,
+        type: "layout",
+        layoutType: "fourImageColumns",
+        component: FourImageColumns,
+      },
+    ],
+  },
+];

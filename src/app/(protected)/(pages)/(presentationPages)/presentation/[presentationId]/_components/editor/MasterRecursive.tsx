@@ -16,6 +16,11 @@ import Table from "./components/Table";
 import Column from "./components/Column";
 import CustomImage from "./components/ImageComponent";
 import BlockQuote from "./components/BlockQuote";
+import { NumberedList, BulletList, TodoList } from "./components/ListComponent";
+import CalloutBox from "./components/CalloutBox";
+import CodeBlock from "./components/CodeBlock";
+import TableOfContent from "./components/TableOfContent";
+import Divider from "./components/Divider";
 
 interface MasterRecursiveProps {
   content: ContentItem;
@@ -150,26 +155,99 @@ const ContentRenderer: React.FC<MasterRecursiveProps> = React.memo(
           </motion.div>
         );
 
-        // case 'numberedList':
-        //   return (
-        //     <motion.div
-        //       {...animationProps}
-        //       className={cn("w-full h-full", content.className)}
-        //     >
-        //       <NumberedList
-        //       items = {content.content as string[]}
-        //       onChange = {(newItems) => onContentChange(content.id , newItems)}
-        //       className = {content.className} />
-        //     </motion.div>
-        //   );
+      case "numberedList":
+        return (
+          <motion.div
+            {...animationProps}
+            className={cn("w-full h-full", content.className)}
+          >
+            <NumberedList
+              items={content.content as string[]}
+              onChange={(newItems) => onContentChange(content.id, newItems)}
+              className={content.className}
+            />
+          </motion.div>
+        );
 
+      case "bulletList":
+        return (
+          <motion.div
+            {...animationProps}
+            className={cn("w-full h-full", content.className)}
+          >
+            <BulletList
+              items={content.content as string[]}
+              onChange={(newItems) => onContentChange(content.id, newItems)}
+              className={content.className}
+            />
+          </motion.div>
+        );
+      case "todoList":
+        return (
+          <motion.div
+            {...animationProps}
+            className={cn("w-full h-full", content.className)}
+          >
+            <TodoList
+              items={content.content as string[]}
+              onChange={(newItems) => onContentChange(content.id, newItems)}
+              className={content.className}
+            />
+          </motion.div>
+        );
+
+      case "calloutBox":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <CalloutBox
+              type={content.callOutTypes || "info"}
+              className={content.className}
+            >
+              <Paragraph {...commmonProps} />
+            </CalloutBox>
+          </motion.div>
+        );
+
+      case "codeBlock":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <CodeBlock
+              code={content.code}
+              language={content.langauge}
+              onChange={() => {}}
+              className={content.className}
+            ></CodeBlock>
+          </motion.div>
+        );
+
+      case "tableOfContents":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <TableOfContent
+              items={content.content as string[]}
+              onItemClick={(id: string) => {
+                console.log(`Navigate to section: ${id}`);
+              }}
+              className={content.className}
+            />
+          </motion.div>
+        );
+      case "divider":
+        return (
+          <motion.div {...animationProps} className="w-full h-full">
+            <Divider className={content.className} />
+          </motion.div>
+        );
 
       case "column":
         if (Array.isArray(content.content)) {
           return (
             <motion.div
               {...animationProps}
-              className={cn("w-full h-full flex flex-col text-lg", content.className)}
+              className={cn(
+                "w-full h-full flex flex-col text-lg",
+                content.className
+              )}
             >
               {content.content.length > 0 ? (
                 (content.content as ContentItem[]).map(
@@ -240,7 +318,7 @@ export const MasterRecursive: React.FC<MasterRecursiveProps> = React.memo(
           slideId={slideId}
           index={index}
         />
-      ); 
+      );
     }
     <React.Fragment>
       <ContentRenderer

@@ -5,13 +5,19 @@ import { LayoutSlides, Slide } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSlideStore } from "@/store/useSlideStore";
 import { isDragging } from "motion-dom";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { v4 } from "uuid";
 import { MasterRecursive } from "./MasterRecursive";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash2 } from "lucide-react";
+import { updateSlides } from "@/actions/project";
+import { useToast } from "@/hooks/use-toast";
 
 interface DropZoneProps {
   index: number;
@@ -97,6 +103,26 @@ const DraggableSlides: React.FC<DraggableSlidesProps> = ({
     }),
     canDrag: isEditable,
   });
+  const [_,drop] = useDrop({
+    accept: ["SLIDE", "LAYOUT"],
+    hover(item: { index: number; type: string }) {
+      if (!ref.current || !isEditable) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (item.type === "SLIDE") {
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+        moveSlide(dragIndex, hoverIndex);
+        item.index = hoverIndex;
+      }
+    },
+  });
+
+  drag(drop(ref))
 
   const handleContentChange = (
     contentId: string,
@@ -138,11 +164,10 @@ const DraggableSlides: React.FC<DraggableSlidesProps> = ({
               <span className="sr-only">Slide options</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-fit p=-0"> 
+          <PopoverContent className="w-fit p=-0">
             <div className="flex space-x-2">
-              <Button variant={'ghost'}
-              onClick={()=> handleDelete(slide.id)}>
-                <Trash2 className="w-5 h-5 text-red-500"/>
+              <Button variant={"ghost"} onClick={() => handleDelete(slide.id)}>
+                <Trash2 className="w-5 h-5 text-red-500" />
                 <span className="sr-only">Delete slide</span>
               </Button>
             </div>
@@ -159,6 +184,7 @@ interface EditorProps {
 
 const Editor = ({ isEditable }: EditorProps) => {
   const {
+    slides,
     getOrderedSlides,
     currentSlide,
     removeSlide,
@@ -167,9 +193,13 @@ const Editor = ({ isEditable }: EditorProps) => {
     addSlideAtIndex,
   } = useSlideStore();
 
+  const { toast } = useToast();
+
   const orderedSlides = getOrderedSlides();
   const [Loading, setIsLoading] = useState(true);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const moveSlide = (dragIndex: number, hoverIndex: number) => {
     if (isEditable) {
@@ -201,8 +231,6 @@ const Editor = ({ isEditable }: EditorProps) => {
     }
   };
 
-
-
   const handleDelete = (id: string) => {
     if (isEditable) {
       console.log("Deleting", id);
@@ -219,9 +247,49 @@ const Editor = ({ isEditable }: EditorProps) => {
     }
   }, [currentSlide]);
 
-  useEffect(()=>{
-    if(typeof window!== 'undefined') setIsLoading(false)
-  },[])
+  useEffect(() => {
+    if (typeof window !== "undefined") setIsLoading(false);
+  }, []);
+
+  const saveSlides = useCallback(() => {
+    if (isEditable && project) {
+      (async () => {
+        const response = await updateSlides(
+          project.id,
+          JSON.parse(JSON.stringify(slides))
+        );
+        if (response.status === 200) {
+          toast({
+            variant: "default",
+            description: "✅ Updated successfully",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            description: "⚠️ Failed to update",
+          });
+        }
+      })();
+    }
+  }, [isEditable, project, slides]);
+
+  useEffect(() => {
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+    if (isEditable) {
+      autoSaveTimeoutRef.current = setTimeout(() => {
+        saveSlides();
+      }, 2000);
+    }
+
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, [slides, isEditable, project]);
+
   return (
     <div className="flex-1 flex flex-col h-full max-w-3xl mx-auto px-4 mb-20">
       {Loading ? (
