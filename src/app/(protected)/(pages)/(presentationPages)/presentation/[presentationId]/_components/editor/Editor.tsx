@@ -59,6 +59,7 @@ export const DropZone: React.FC<DropZoneProps> = ({
   }
   return (
     <div
+      ref={dropRef as unknown as React.RefObject<HTMLDivElement>}
       className={cn(
         "h-4 my-2 rounded-md transition-all duration-200",
         isOver && canDrop ? "border-green-500 bg-green-100" : "border-gray-300",
@@ -103,7 +104,7 @@ const DraggableSlides: React.FC<DraggableSlidesProps> = ({
     }),
     canDrag: isEditable,
   });
-  const [_,drop] = useDrop({
+  const [_, drop] = useDrop({
     accept: ["SLIDE", "LAYOUT"],
     hover(item: { index: number; type: string }) {
       if (!ref.current || !isEditable) {
@@ -122,7 +123,7 @@ const DraggableSlides: React.FC<DraggableSlidesProps> = ({
     },
   });
 
-  drag(drop(ref))
+  drag(drop(ref));
 
   const handleContentChange = (
     contentId: string,
@@ -254,21 +255,18 @@ const Editor = ({ isEditable }: EditorProps) => {
   const saveSlides = useCallback(() => {
     if (isEditable && project) {
       (async () => {
-        const response = await updateSlides(
-          project.id,
-          JSON.parse(JSON.stringify(slides))
-        );
-        if (response.status === 200) {
-          toast({
-            variant: "default",
-            description: "✅ Updated successfully",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            description: "⚠️ Failed to update",
-          });
-        }
+        await updateSlides(project.id, JSON.parse(JSON.stringify(slides)));
+        // if (response.status === 200) {
+        //   toast({
+        //     variant: "default",
+        //     description: "✅ Updated successfully",
+        //   });
+        // } else {
+        //   toast({
+        //     variant: "destructive",
+        //     description: "⚠️ Failed to update",
+        //   });
+        // }
       })();
     }
   }, [isEditable, project, slides]);
@@ -313,6 +311,13 @@ const Editor = ({ isEditable }: EditorProps) => {
                   handleDelete={handleDelete}
                   isEditable={isEditable}
                 />
+                {isEditable && (
+                  <DropZone
+                    index={index + 1}
+                    onDrop={handleDrop}
+                    isEditable={isEditable}
+                  />
+                )}
               </React.Fragment>
             ))}
           </div>

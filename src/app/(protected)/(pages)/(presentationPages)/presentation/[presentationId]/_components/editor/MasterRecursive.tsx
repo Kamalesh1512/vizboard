@@ -104,7 +104,7 @@ const ContentRenderer: React.FC<MasterRecursiveProps> = React.memo(
                 )
               }
               initialColSize={content.initialColumns}
-              initialRowSize={content.intialRows}
+              initialRowSize={content.initialRows}
               isPreview={isPreview}
               isEditable={isEditable}
             />

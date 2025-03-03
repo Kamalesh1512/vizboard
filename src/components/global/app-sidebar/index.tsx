@@ -17,9 +17,11 @@ import NavMain from "@/components/global/app-sidebar/nav-main";
 import { data } from "@/lib/constants";
 import { InferSelectModel } from "drizzle-orm";
 import { LayoutDashboard, LayoutDashboardIcon } from "lucide-react";
+import { existingUser } from "@/lib/types";
 
 type ProjectType = InferSelectModel<typeof Project>;
 type UserType = InferSelectModel<typeof User>;
+
 
 const AppSidebar = ({
   recentProjects,

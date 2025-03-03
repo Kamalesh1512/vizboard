@@ -1,4 +1,5 @@
 "use client";
+import { buySubscription } from "@/actions/dodoPayments";
 import { Button } from "@/components/ui/button";
 import {
   SidebarMenu,
@@ -22,6 +23,16 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
     return null;
   }
 
+  const handleUpgrade = async () =>{
+    setLoading(true)
+
+    try {
+      const response = await buySubscription(drizzleUser.id)
+     } catch (error) {
+      
+    }
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -41,7 +52,7 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
                   className="w-full border-vivid bg-primary-foreground hover:bg-primary-foreground text-primary rounded-full font-bold"
                   variant={"outline"}
                   size={"lg"}
-                  // onClick={handleUpgrade}
+                  onClick={handleUpgrade}
                 >
                   {loading ? "Upgrading..." : "Upgrade"}
                 </Button>

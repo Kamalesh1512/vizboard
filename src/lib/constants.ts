@@ -6,7 +6,7 @@ import {
   Settings2,
   Trash2,
 } from "lucide-react";
-import { ContentType, LayoutGroup, Theme } from "./types";
+import { ComponentGroup, ContentType, LayoutGroup, Theme } from "./types";
 import { v4 } from "uuid";
 import {
   BlankCardIcon,
@@ -36,8 +36,28 @@ import {
   ThreeImageColumns,
   TwoColumns,
   TwoColumnsWithHeadings,
-  TwoImageColumns
+  TwoImageColumns,
 } from "./slideLayouts";
+import {
+  BulletListComponent,
+  Blockquote,
+  CalloutBoxComponent,
+  CodeBlockComponent,
+  CustomButtonComponent,
+  CustomImage,
+  DividerComponent,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  NumberedListComponent,
+  Paragraph,
+  ResizableColumn,
+  Table,
+  TableOfContentsComponent,
+  Title,
+  TodoListComponent,
+} from "./slideComponents";
 
 export const data = {
   user: {
@@ -943,6 +963,171 @@ export const layouts: LayoutGroup[] = [
         type: "layout",
         layoutType: "fourImageColumns",
         component: FourImageColumns,
+      },
+    ],
+  },
+];
+
+export const component: ComponentGroup[] = [
+  {
+    name: "Text",
+    components: [
+      {
+        name: "Title",
+        icon: "T",
+        type: "component",
+        component: Title,
+        componentType: "title",
+      },
+      {
+        componentType: "heading1",
+        name: "Heading 1",
+        type: "component",
+        component: Heading1,
+        icon: "H1",
+      },
+      {
+        componentType: "heading2",
+        name: "Heading 2",
+        type: "component",
+        component: Heading2,
+        icon: "H2",
+      },
+      {
+        componentType: "heading3",
+        name: "Heading 3",
+        type: "component",
+        component: Heading3,
+        icon: "H3",
+      },
+      {
+        componentType: "heading4",
+        name: "Heading 4",
+        type: "component",
+        component: Heading4,
+        icon: "H4",
+      },
+
+      {
+        componentType: "paragraph",
+        name: "Paragraph",
+        type: "component",
+        component: Paragraph,
+        icon: "Paragraph",
+      },
+    ],
+  },
+
+  {
+    name: "Tables",
+    components: [
+      {
+        componentType: "table2x2",
+        name: "2×2 table",
+        type: "component",
+        component: { ...Table, initialColumns: 2, initialRows: 2 },
+        icon: "⊞",
+      },
+      {
+        componentType: "table3x3",
+        name: "3×3 table",
+        type: "component",
+        component: { ...Table, initialColumns: 3, initialRows: 3 },
+        icon: "⊞",
+      },
+      {
+        componentType: "table4x4",
+        name: "4×4 table",
+        type: "component",
+        component: { ...Table, initialColumns: 4, initialRows: 4 },
+        icon: "⊞",
+      },
+    ],
+  },
+
+  {
+    name: "Lists",
+    components: [
+      {
+        componentType: "bulletList",
+        name: "Bulleted list",
+        type: "component",
+        component: BulletListComponent,
+        icon: "•",
+      },
+      {
+        componentType: "numberedList",
+        name: "Numbered list",
+        type: "component",
+        component: NumberedListComponent,
+        icon: "1.",
+      },
+      {
+        componentType: "todoList",
+        name: "Todo list",
+        type: "component",
+        component: TodoListComponent,
+        icon: "☐",
+      },
+    ],
+  },
+  {
+    name: "Callouts",
+    components: [
+      {
+        componentType: "note",
+        name: "Note box",
+        type: "component",
+        component: { ...CalloutBoxComponent, callOutTypes: "info" },
+        icon: "📝",
+      },
+      {
+        componentType: "info",
+        name: "Info box",
+        type: "component",
+        component: { ...CalloutBoxComponent, callOutTypes: "info" },
+        icon: "ℹ",
+      },
+      {
+        componentType: "warning",
+        name: "Warning box",
+        type: "component",
+        component: { ...CalloutBoxComponent, callOutTypes: "warning" },
+        icon: "⚠",
+      },
+      {
+        componentType: "caution",
+        name: "Caution box",
+        type: "component",
+        component: { ...CalloutBoxComponent, callOutTypes: "caution" },
+        icon: "⚠",
+      },
+      {
+        componentType: "success",
+        name: "Success box",
+        type: "component",
+        component: { ...CalloutBoxComponent, callOutTypes: "success" },
+        icon: "✓",
+      },
+      {
+        componentType: "question",
+        name: "Question box",
+        type: "component",
+        component: { ...CalloutBoxComponent, callOutTypes: "question" },
+        icon: "?",
+      },
+    ],
+  },
+
+  {
+    name: "Columns",
+    components: [
+      {
+        componentType: "resizableColumns",
+        name: "2x2 Column",
+        type: "component",
+        component: ResizableColumn,
+        icon: "⊞",
       },
     ],
   },
