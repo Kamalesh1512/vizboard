@@ -151,6 +151,24 @@ export async function updateProject(
   }
 }
 
+// query to update the User
+export async function updateUserSubscription(
+  email: string,
+  updates: Record<string, string | number | boolean | JSON>
+) {
+  try {
+    const user = await db
+      .update(User)
+      .set(updates)
+      .where(eq(User.email, email));
+
+  } catch (error) {
+    console.error("Database query error [USER_TABLE]:", error);
+    throw new Error("Failed to Update USER Table");
+  }
+}
+
+
 // query to add new project
 export async function addProject(
   title: string,

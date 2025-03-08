@@ -1,5 +1,5 @@
 "use client";
-import { buySubscription } from "@/actions/dodoPayments";
+import { buySubscription } from "@/actions/payments";
 import { Button } from "@/components/ui/button";
 import {
   SidebarMenu,
@@ -7,6 +7,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { User } from "@/db/schema";
+import { useModal } from "@/hooks/use-modal";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { InferSelectModel } from "drizzle-orm";
 import { useRouter } from "next/navigation";
@@ -16,21 +17,13 @@ type UserType = InferSelectModel<typeof User>;
 
 const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const subscriptionsPlans = useModal();
+
+  const isSubscribed = drizzleUser.subscription;
 
   if (!isLoaded || !isSignedIn) {
     return null;
-  }
-
-  const handleUpgrade = async () =>{
-    setLoading(true)
-
-    try {
-      const response = await buySubscription(drizzleUser.id)
-     } catch (error) {
-      
-    }
   }
 
   return (
@@ -41,21 +34,25 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
             <div className="flex flex-col items-start p-2 pb-3 gap-4 bg-primary-foreground rounded-xl">
               <div className="flex flex-col items-start gap-1">
                 <p className="text-base font-bold">
-                  Get <span className="text-vivid">Creative AI</span>
+                  Get <span className="text-vivid">Pro</span>
                 </p>
                 <span className="text-sm dark:text-muted-foreground">
                   Unlock all features including AI and more
                 </span>
               </div>
               <div className="w-full bg-vivid-gradient p-[1px] rounded-full">
-                <Button
-                  className="w-full border-vivid bg-primary-foreground hover:bg-primary-foreground text-primary rounded-full font-bold"
-                  variant={"outline"}
-                  size={"lg"}
-                  onClick={handleUpgrade}
-                >
-                  {loading ? "Upgrading..." : "Upgrade"}
-                </Button>
+                {!isSubscribed ? (
+                  <Button
+                    className="w-full border-vivid bg-primary-foreground hover:bg-primary-foreground text-primary rounded-full font-bold"
+                    variant={"outline"}
+                    size={"lg"}
+                    onClick={subscriptionsPlans.onOpen}
+                  >
+                    Upgrade
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           )}
@@ -64,10 +61,12 @@ const NavFooter = ({ drizzleUser }: { drizzleUser: UserType }) => {
               size={"lg"}
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <UserButton/>
+              <UserButton />
               <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">{user?.fullName}</span>
-                <span className='truncate text-muted-foreground'>{user?.emailAddresses[0].emailAddress}</span>
+                <span className="truncate text-muted-foreground">
+                  {user?.emailAddresses[0].emailAddress}
+                </span>
               </div>
             </SidebarMenuButton>
           </SignedIn>
