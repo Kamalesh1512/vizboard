@@ -53,12 +53,12 @@ const CreatePage = ({ onSelectionOptions }: CreatePageProps) => {
             }}
             className={`${
               option.highlight
-                ? "bg-vivid-gradient"
-                : "hover:bg-vivid-gradient border"
+                ? "bg-gradient-to-r from-blue-700/20 via-sky-500/10 to-transparent border border-cyan-600"
+                : "hover: border border-cyan-600 bg-transparent"
             } rounded-xl p-[1px] transition-all duration-300 ease-in-out`}
           >
             <motion.div
-              className="w-full p-4 flex flex-col gap-y-6 items-start bg-white dark:bg-black rounded-xl "
+              className="w-full p-4 flex flex-col gap-y-6 items-start rounded-xl"
               whileHover={{
                 transition: { duration: 0.1 },
               }}
@@ -76,7 +76,7 @@ const CreatePage = ({ onSelectionOptions }: CreatePageProps) => {
                     {option.highlightedText}
                   </p>
                 </div>
-                <p className="text-muted-foreground text-sm font-normal">
+                <p className="text-muted-foreground text-lg font-normal">
                   {option.description}
                 </p>
               </div>
